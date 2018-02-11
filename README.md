@@ -1,6 +1,6 @@
 # Hefeweizen
 
-### Four insomniacs- with blood-red eyes and an incessant determination, maketh a Graph Engine from scratch in 24 hours. Here lies the artifacts they left behind!
+### Graph Engine maketh four insomniacs. In 24 hours. From scratch!
 
 ```javascript
 var data = "awakeAndCode";
