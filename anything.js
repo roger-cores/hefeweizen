@@ -58,6 +58,8 @@ void draw(){
 	scaleLeft.display();
 	scaleReset.display();
 
+
+
 }
 
 void drawSignal(){ //draws a sin wave
@@ -145,12 +147,10 @@ void update(int x, int y){
 			yScale -= 0.1;
 			if(yScale < 0) yScale = 0.01;
 		} else if(scaleLeft.pressed()){
-			xScale += 0.1;
-			println(xScale);
+			xScale += 0.2;
 		} else if(scaleRight.pressed()){
-			xScale -= 0.1;
+			xScale -= 0.2;
 			if(xScale < 1) xScale = 1;
-			println(xScale);
 		} else if(scaleReset.pressed()){
 			xScale = 50;
 			yScale = 1;

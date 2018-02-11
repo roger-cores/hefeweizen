@@ -115,7 +115,7 @@
 
 							</li>
 
-							<li class="data-type"><a href="#">Current Data</a></li>
+							<li id="current-data" class="data-type"><a href="#">Current Data</a></li>
 						</ul>
 					</div>
 				</div>
@@ -145,31 +145,37 @@
     let year = 2000;
     let re;
     let series = 'TIME_SERIES_MONTHLY';
-    let srs = 'Monthly';
+    let srs = 'Monthly Time Series';
 
 
     function update(){
       $.getJSON(`https://www.alphavantage.co/query?function=${series}&symbol=${companyId}&apikey=186282MSLENW9SDQ`, function(data) {
         dt = [];
         info = data;
-        for(var key in data[`${srs} Time Series`]){
+        console.log(info);
+        for(var key in data[srs]){
           if(dataType=='monthly' && re.test(key)){
             dt.unshift({
              date: new Date(key),
-             data: parseFloat(data['Monthly Time Series'][key]['4. close'])
+             data: parseFloat(data[srs][key]['4. close'])
             });
           }
           else if (dataType=='weekly' && re.test(key)){
             console.log(key);
             dt.unshift({
              date: new Date(key),
-             data: parseFloat(data['Weekly Time Series'][key]['4. close'])
+             data: parseFloat(data[srs][key]['4. close'])
             });
           }
           else if(dataType=='historical') {
             dt.unshift({
              date: new Date(key),
-             data: parseFloat(data['Monthly Time Series'][key]['4. close'])
+             data: parseFloat(data[srs][key]['4. close'])
+            });
+          } else if(dataType=='current-data' && re.test(key)){
+            dt.unshift({
+             date: new Date(key),
+             data: parseFloat(data[srs][key]['4. close'])
             });
           }
         }
@@ -194,7 +200,14 @@
        if($(this)[0].id == 'historical'){
          dataType = 'historical';
          series = 'TIME_SERIES_MONTHLY';
-         srs = 'Monthly';
+         srs = 'Monthly Time Series';
+         update();
+       } else if($(this)[0].id == 'current-data'){
+         dataType = 'current-data';
+         series = 'TIME_SERIES_DAILY';
+         srs = 'Time Series (Daily)';
+         re = RegExp(`${new Date().getFullYear()}.`);
+         console.log(re);
          update();
        }
 
@@ -206,7 +219,7 @@
        re = RegExp(`${$(this)[0].id}.`);
        dataType = 'monthly';
        series = 'TIME_SERIES_MONTHLY';
-       srs = 'Monthly';
+       srs = 'Monthly Time Series';
        update();
        $('.data-type').removeClass('active');
        $('.mnthly-header').addClass('active');
@@ -222,7 +235,7 @@
        re = RegExp(`(2018|2017|2016|2015)-${$(this)[0].id}-.`);
        dataType = 'weekly';
        series = 'TIME_SERIES_WEEKLY';
-       srs = 'Weekly';
+       srs = 'Weekly Time Series';
        update();
        $('.data-type').removeClass('active');
        $('.weekly-header').addClass('active');
